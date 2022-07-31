@@ -1,0 +1,7 @@
+project: xous-core
+target: store
+
+cmds:
+  - cmd: /store
+  - cmd: /store_no_inst @@
+    libfuzzer: false
