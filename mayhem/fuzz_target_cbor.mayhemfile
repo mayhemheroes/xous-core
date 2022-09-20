@@ -1,0 +1,7 @@
+project: xous-core
+target: fuzz-target-cbor
+
+cmds:
+  - cmd: /fuzz_target_cbor
+  - cmd: /fuzz_target_cbor_no_inst @@
+    libfuzzer: false
