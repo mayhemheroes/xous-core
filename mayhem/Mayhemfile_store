@@ -1,0 +1,5 @@
+project: xous-core
+target: store
+
+cmds:
+  - cmd: /mayhem/store

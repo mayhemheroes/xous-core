@@ -1,0 +1,41 @@
+# Additive replacement for apps/vault/libraries/persistent_store/fuzz: upstream's
+# model-based `store` harness needs persistent_store's `std` feature, which no longer
+# compiles at tip (the xous port removed src/format.rs that driver/model/store still
+# reference), and the ported Store is now a live pddb-service client that cannot run
+# host-side. This harness keeps the historical `store` target name and fuzzes the
+# crate's surviving host-side storage code path (Linear over a RAM Storage impl),
+# differentially checked against a shadow model.
+[package]
+name = "store-fuzz-mayhem"
+version = "0.0.0"
+publish = false
+edition = "2018"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+
+[dependencies.persistent_store]
+path = "../../apps/vault/libraries/persistent_store"
+
+# Feature unification: persistent_store -> pddb -> keystore-api/ux-api need a
+# board/generation feature to compile at all; gen2 + hosted are the host-side set.
+[dependencies.pddb]
+path = "../../services/pddb"
+features = ["gen2"]
+
+[dependencies.ux-api]
+path = "../../libs/ux-api"
+features = ["hosted"]
+
+# Prevent this from interfering with workspaces
+[workspace]
+members = ["."]
+
+[[bin]]
+name = "store"
+path = "fuzz_targets/store.rs"
+test = false
+doc = false

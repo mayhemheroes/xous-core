@@ -1,0 +1,5 @@
+project: xous-core
+target: fuzz-target-cbor
+
+cmds:
+  - cmd: /mayhem/fuzz_target_cbor

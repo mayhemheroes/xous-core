@@ -1,0 +1,27 @@
+# Additive replacement for apps/vault/libraries/cbor/fuzz: the upstream harness no
+# longer compiles against the current cbor API (cbor::write now returns Result).
+# Same code path, fixed assertion, libfuzzer-sys 0.4.
+[package]
+name = "cbor-fuzz-mayhem"
+version = "0.0.0"
+publish = false
+edition = "2018"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+
+[dependencies.cbor]
+path = "../../apps/vault/libraries/cbor"
+
+# Prevent this from interfering with workspaces
+[workspace]
+members = ["."]
+
+[[bin]]
+name = "fuzz_target_cbor"
+path = "fuzz_targets/fuzz_target_cbor.rs"
+test = false
+doc = false
